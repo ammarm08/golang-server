@@ -48,8 +48,9 @@
           output = document.getElementById("output");
 
           socket = io();
-          websocket.onmessage = onMessage;
-          websocket.onclose = onClose;
+          socket.on('message', function(msg) {
+            showMessage(msg);
+          })
   }
 
   window.addEventListener("load", init, false);
