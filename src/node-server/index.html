@@ -2,9 +2,16 @@
 <html>
 <head>
   <meta charset="utf-8" />
+</head>
+<body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+  <input id="input" type="text">
+  <div id="output"></div>
   <script>
 
-  var input, output, websocket;
+  var input, output, socket;
 
   function showMessage(m) {
           var p = document.createElement("p");
@@ -23,8 +30,9 @@
   function sendMessage() {
           var m = input.value;
           input.value = "";
-          websocket.send(m);
-          showMessage(m);
+          socket.emit('message', m);
+          // showMessage(m);
+          return false;
   }
 
   function onKey(e) {
@@ -39,7 +47,7 @@
 
           output = document.getElementById("output");
 
-          websocket = new WebSocket("ws://{{.}}/socket");
+          socket = io();
           websocket.onmessage = onMessage;
           websocket.onclose = onClose;
   }
@@ -47,13 +55,5 @@
   window.addEventListener("load", init, false);
 
   </script>
-</head>
-<body>
-  <script src="/socket.io/socket.io.js"></script>
-  <script>
-    var socket = io();
-  </script>
-  <input id="input" type="text">
-  <div id="output"></div>
 </body>
 </html>
